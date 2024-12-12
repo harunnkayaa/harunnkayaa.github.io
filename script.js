@@ -1,8 +1,11 @@
 const gameBoard = document.getElementById("game-board");
 const statusDisplay = document.getElementById("status");
-const questionSection = document.getElementById("question-section");
+const questionSection = document.createElement("div"); // Soru kutusu oluşturuluyor
+document.body.appendChild(questionSection);
 const player1CardsContainer = document.getElementById("player1-cards");
 const player2CardsContainer = document.getElementById("player2-cards");
+const player1Buttons = document.getElementById("player1-buttons");
+const player2Buttons = document.getElementById("player2-buttons");
 
 // Tahta ve oyuncu başlangıç konumları
 const grid = [];
@@ -39,9 +42,18 @@ function switchPlayer() {
     return;
   }
   currentPlayer = currentPlayer === 1 ? 2 : 1;
-  statusDisplay.textContent = `Sıra: Oyuncu ${currentPlayer} (${
-    currentPlayer === 1 ? "Mavi" : "Kırmızı"
-  })`;
+  statusDisplay.textContent = `Sıra: Oyuncu ${currentPlayer} (${currentPlayer === 1 ? "Mavi" : "Kırmızı"})`;
+
+  toggleButtons();
+}
+
+// Butonların aktiflik kontrolü
+function toggleButtons() {
+  const activeButtons = currentPlayer === 1 ? player1Buttons : player2Buttons;
+  const inactiveButtons = currentPlayer === 1 ? player2Buttons : player1Buttons;
+
+  activeButtons.querySelectorAll(".button").forEach((button) => (button.disabled = false));
+  inactiveButtons.querySelectorAll(".button").forEach((button) => (button.disabled = true));
 }
 
 // Engel koyma
@@ -50,7 +62,6 @@ gameBoard.addEventListener("click", (e) => {
     e.target.classList.contains("cell") &&
     !e.target.classList.contains("barrier")
   ) {
-    // Engel koymadan önce kontrol
     e.target.classList.add("barrier");
     if (!canPlayersMove()) {
       alert("Bu engeli koymak oyuncuları sıkıştırır! Lütfen başka bir yere koyun.");
@@ -63,75 +74,53 @@ gameBoard.addEventListener("click", (e) => {
 
 // Oyuncuların hareket edebilip edemeyeceğini kontrol etme
 function canPlayersMove() {
-  return canReachTarget(player1Pos) && canReachTarget(player2Pos);
+  return canMove(player1Pos) && canMove(player2Pos);
 }
-// Oyuncuların hareket edebilip edemeyeceğini kontrol etme
-function canPlayersMove() {
-    return canMove(player1Pos) && canMove(player2Pos);
+
+function canMove(pos) {
+  const visited = new Set();
+  return dfs(pos.row, pos.col, visited);
+}
+
+// DFS ile oyuncunun hareket edebileceği yolları kontrol et
+function dfs(row, col, visited) {
+  const key = `${row}-${col}`;
+  if (visited.has(key)) return false;
+  visited.add(key);
+
+  // Eğer oyuncu hedef çizgisine ulaştıysa
+  if ((currentPlayer === 1 && row === 0) || (currentPlayer === 2 && row === 8)) {
+    return true;
   }
-  
-  // Bir oyuncunun herhangi bir yere hareket edebilip edemeyeceğini kontrol etme
-  function canMove(pos) {
-    const visited = new Set();
-    return dfs(pos.row, pos.col, visited);
-  }
-  
-  // DFS ile oyuncunun hareket edebileceği yolları kontrol et
-  function dfs(row, col, visited) {
-    const key = `${row}-${col}`;
-    if (visited.has(key)) return false; // Daha önce ziyaret edilen hücreleri tekrar kontrol etme
-    visited.add(key);
-  
-    // Eğer oyuncu hedef çizgisine ulaştıysa
-    if ((currentPlayer === 1 && row === 0) || (currentPlayer === 2 && row === 8)) {
-      return true;
-    }
-  
-    // Tüm yönlere bak: yukarı, aşağı, sol, sağ
-    const directions = [
-      { row: -1, col: 0 }, // yukarı
-      { row: 1, col: 0 },  // aşağı
-      { row: 0, col: -1 }, // sola
-      { row: 0, col: 1 },  // sağa
-    ];
-  
-    for (let dir of directions) {
-      const newRow = row + dir.row;
-      const newCol = col + dir.col;
-  
-      if (
-        newRow >= 0 &&
-        newRow < 9 &&
-        newCol >= 0 &&
-        newCol < 9 &&
-        !grid[newRow][newCol].classList.contains("barrier") &&
-        !visited.has(`${newRow}-${newCol}`)
-      ) {
-        if (dfs(newRow, newCol, visited)) {
-          return true;
-        }
-      }
-    }
-  
-    return false; // Hiçbir yere hareket edilemiyorsa
-  }
-  
-  // Engel koyma
-  gameBoard.addEventListener("click", (e) => {
+
+  // Tüm yönlere bak: yukarı, aşağı, sol, sağ
+  const directions = [
+    { row: -1, col: 0 },
+    { row: 1, col: 0 },
+    { row: 0, col: -1 },
+    { row: 0, col: 1 },
+  ];
+
+  for (let dir of directions) {
+    const newRow = row + dir.row;
+    const newCol = col + dir.col;
+
     if (
-      e.target.classList.contains("cell") &&
-      !e.target.classList.contains("barrier")
+      newRow >= 0 &&
+      newRow < 9 &&
+      newCol >= 0 &&
+      !grid[newRow][newCol].classList.contains("barrier") &&
+      !visited.has(`${newRow}-${newCol}`)
     ) {
-      // Engel koymadan önce kontrol
-      e.target.classList.add("barrier");
-      if (!canPlayersMove()) {
-        alert("Bu engeli koymak oyuncuları sıkıştırır! Lütfen başka bir yere koyun.");
-        e.target.classList.remove("barrier");
-      } else {
-        switchPlayer();
+      if (dfs(newRow, newCol, visited)) {
+        return true;
       }
     }
-  });
+  }
+
+  return false;
+}
+
 // Kartları oluştur ve oyuncu alanlarına yerleştir
 function createCards(playerContainer, player) {
   cardEffects.forEach((effect, index) => {
@@ -188,22 +177,6 @@ function removeBarrier(e) {
   }
 }
 
-// Klavye ile hareket kontrolü
-document.addEventListener("keydown", (e) => {
-  const pos = currentPlayer === 1 ? player1Pos : player2Pos;
-  if (currentPlayer === 1) {
-    if (e.key === "ArrowUp") movePlayer(pos, "up");
-    if (e.key === "ArrowDown") movePlayer(pos, "down");
-    if (e.key === "ArrowLeft") movePlayer(pos, "left");
-    if (e.key === "ArrowRight") movePlayer(pos, "right");
-  } else if (currentPlayer === 2) {
-    if (e.key === "w") movePlayer(pos, "up");
-    if (e.key === "s") movePlayer(pos, "down");
-    if (e.key === "a") movePlayer(pos, "left");
-    if (e.key === "d") movePlayer(pos, "right");
-  }
-});
-
 // Oyuncuyu hareket ettirme
 function movePlayer(pos, direction) {
   let newRow = pos.row;
@@ -218,7 +191,6 @@ function movePlayer(pos, direction) {
     newRow >= 0 &&
     newRow < 9 &&
     newCol >= 0 &&
-    newCol < 9 &&
     !grid[newRow][newCol].classList.contains("barrier")
   ) {
     grid[pos.row][pos.col].classList.remove(currentPlayer === 1 ? "player1" : "player2");
@@ -227,7 +199,22 @@ function movePlayer(pos, direction) {
     grid[pos.row][pos.col].classList.add(currentPlayer === 1 ? "player1" : "player2");
 
     if (!extraMoveActive) {
-      switchPlayer(); // Eğer ekstra hamle etkisi yoksa oyuncu sırası değişir
+      switchPlayer();
     }
   }
 }
+
+// Buton olaylarını ekle
+player1Buttons.addEventListener("click", (e) => {
+  if (e.target.classList.contains("button")) {
+    movePlayer(player1Pos, e.target.dataset.direction);
+  }
+});
+
+player2Buttons.addEventListener("click", (e) => {
+  if (e.target.classList.contains("button")) {
+    movePlayer(player2Pos, e.target.dataset.direction);
+  }
+});
+
+toggleButtons(); // Başlangıçta doğru butonları aktif yapar
