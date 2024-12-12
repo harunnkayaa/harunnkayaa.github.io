@@ -74,22 +74,25 @@ gameBoard.addEventListener("click", (e) => {
 
 // Oyuncuların hareket edebilip edemeyeceğini kontrol etme
 function canPlayersMove() {
-  return canMove(player1Pos) && canMove(player2Pos);
+  return (
+    canMove(player1Pos, currentPlayer === 2) &&
+    canMove(player2Pos, currentPlayer === 1)
+  );
 }
 
-function canMove(pos) {
+function canMove(pos, forOpponent = false) {
   const visited = new Set();
-  return dfs(pos.row, pos.col, visited);
+  return dfs(pos.row, pos.col, visited, forOpponent);
 }
 
 // DFS ile oyuncunun hareket edebileceği yolları kontrol et
-function dfs(row, col, visited) {
+function dfs(row, col, visited, forOpponent) {
   const key = `${row}-${col}`;
   if (visited.has(key)) return false;
   visited.add(key);
 
   // Eğer oyuncu hedef çizgisine ulaştıysa
-  if ((currentPlayer === 1 && row === 0) || (currentPlayer === 2 && row === 8)) {
+  if ((forOpponent && row === 8) || (!forOpponent && row === 0)) {
     return true;
   }
 
@@ -109,10 +112,11 @@ function dfs(row, col, visited) {
       newRow >= 0 &&
       newRow < 9 &&
       newCol >= 0 &&
+      newCol < 9 &&
       !grid[newRow][newCol].classList.contains("barrier") &&
       !visited.has(`${newRow}-${newCol}`)
     ) {
-      if (dfs(newRow, newCol, visited)) {
+      if (dfs(newRow, newCol, visited, forOpponent)) {
         return true;
       }
     }
