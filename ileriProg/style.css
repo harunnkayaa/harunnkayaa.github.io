@@ -1,116 +1,181 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    background-color: #f0f8ff;
-    margin: 0;
-  }
-  
-  h1 {
-    margin-top: 20px;
-  }
-  
-  #game-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 20px;
-  }
-  
-  #game-board {
-    display: grid;
-    grid-template-columns: repeat(9, 10vw);
-    grid-template-rows: repeat(9, 10vw);
-    gap: 5px;
-    border: 3px solid black;
-    background-color: #ddd;
-    width: 90vw;
-    max-width: 450px;
-    aspect-ratio: 1;
-  }
-  
-  .cell {
-    background-color: white;
-    border: 1px solid #aaa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .player1 {
-    background-color: blue;
-    border-radius: 50%;
-    width: 70%;
-    height: 70%;
-  }
-  
-  .player2 {
-    background-color: red;
-    border-radius: 50%;
-    width: 70%;
-    height: 70%;
-  }
-  
-  .barrier {
-    background-color: black;
-  }
-  
-  .player-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .controls {
-    display: grid;
-    grid-template-areas:
-      "up"
-      "left right"
-      "down";
-    gap: 5px;
-  }
-  
-  .controls button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #eee;
-    border: 1px solid black;
-    cursor: pointer;
-  }
-  
-  .controls button:hover {
-    background-color: #ccc;
-  }
-  
-  .cards {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .card {
-    padding: 10px;
-    background-color: lightgray;
-    border: 1px solid black;
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .card:hover {
-    background-color: darkgray;
-  }
-  
-  .card.disabled {
-    background-color: gray;
-    cursor: not-allowed;
-  }
-  
-  #question-section {
-    margin-top: 20px;
-    font-size: 16px;
-    color: darkred;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Roboto', Arial, sans-serif;
+  background: linear-gradient(to bottom, #f5f7fa, #c3cfe2);
+  color: #2d3748;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  margin-top: 20px;
+  color: #1a202c;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#game-container {
+  display: flex;
+  margin-top: 20px;
+  gap: 20px;
+  justify-content: center;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(9, 50px);
+  grid-template-rows: repeat(9, 50px);
+  gap: 5px;
+  border: 2px solid #4a5568;
+  background-color: #edf2f7;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border: 1px solid #cbd5e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover efekti */
+.cell:hover {
+  background-color: #e2e8f0; /* Sadece beyaz hücreler için hover efekti */
+}
+
+/* Siyah engeller için özel stiller */
+.cell.barrier {
+  background-color: black !important; /* Kalıcı siyah renk */
+  cursor: default; /* Tıklanamaz görünüm */
+}
+
+/* Siyah engellerde hover efekti devre dışı */
+.cell.barrier:hover {
+  background-color: black !important; /* Renk değişimini engeller */
+}
+.player1 {
+  background-color: #3182ce;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+
+}
+
+.player2 {
+  background-color: #e53e3e;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.barrier {
+  background-color: #2d3748;
+  border-radius: 5px;
+}
+
+#status {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #4a5568;
+}
+
+.player-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+  gap: 20px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  padding: 10px;
+  background-color: #e2e8f0;
+  border: 1px solid #a0aec0;
+  text-align: center;
+  font-weight: bold;
+  color: #2d3748;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  background-color: #cbd5e0;
+  transform: scale(1.05);
+}
+
+.card.disabled {
+  background-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.buttons {
+  display: grid;
+  grid-template-areas:
+    "up up up"
+    "left mid right"
+    "down down down";
+  gap: 10px;
+}
+
+.button {
+  padding: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #63b3ed;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #3182ce;
+  transform: scale(1.05);
+}
+
+.button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.button.up {
+  grid-area: up;
+}
+
+.button.down {
+  grid-area: down;
+}
+
+.button.left {
+  grid-area: left;
+}
+
+.button.right {
+  grid-area: right;
+}
+
+.button.mid {
+  grid-area: mid;
+  visibility: hidden;
+}
