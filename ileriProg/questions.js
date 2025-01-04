@@ -54,3 +54,4 @@ const questions = [
 
 // Soruları localStorage'a kaydedin
 localStorage.setItem("questions", JSON.stringify(questions));
+ 
