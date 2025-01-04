@@ -1,6 +1,6 @@
 const gameBoard = document.getElementById("game-board");
 const statusDisplay = document.getElementById("status");
-const questionSection = document.createElement("div"); // Soru kutusu oluşturuluyor
+const questionSection = document.createElement("div"); // hangi etkinin uygulandığını yazılsdığı kısım 
 document.body.appendChild(questionSection);
 const player1CardsContainer = document.getElementById("player1-cards");
 const player2CardsContainer = document.getElementById("player2-cards");
@@ -10,7 +10,6 @@ const playerNameInputs = document.getElementById("player-name-inputs");
 const player1NameInput = document.getElementById("player1-name");
 const player2NameInput = document.getElementById("player2-name");
 const startGameButton = document.getElementById("start-game");
-//const replayGameButton = document.getElementById("replay-game");
 let savedPlayer1Name = "";
 let savedPlayer2Name = "";
 // Tahta ve oyuncu başlangıç konumları
@@ -24,7 +23,7 @@ let effectInProgress = false; // Etkin kart etkisi kontrolü
 let gameStarted = false; // Oyun başlatıldı mı kontrolü
 // Kart türleri
 const cardEffects = ["Engel Kaldırma Hakkı", "Ekstra Hamle Hakkı", "Hamle Yapamama Cezası"];
-
+const cardColor = "#4CAF50"; // Yeşil
 // Tahta oluştur
 for (let row = 0; row < 9; row++) {
   grid[row] = [];
@@ -202,8 +201,6 @@ function canPlayersMove() {
   const player1CanMove = canMove(player1Pos, false); // Oyuncu 1 hedefe ulaşabilir mi?
   const player2CanMove = canMove(player2Pos, true);  // Oyuncu 2 hedefe ulaşabilir mi?
 
-  console.log(`Oyuncu 1 hareket edebilir mi: ${player1CanMove}`);
-  console.log(`Oyuncu 2 hareket edebilir mi: ${player2CanMove}`);
 
   return player1CanMove && player2CanMove;
 }
@@ -305,31 +302,42 @@ function removeBarrier(e) {
   }
 }
 
-// Kartları oluştur ve oyuncu alanlarına yerleştir
-function createCards(playerContainer, player) {
-  cardEffects.forEach((effect, index) => {
+// Kartları oluştur ve rastgele sıralanmasını sağla
+function createCards(playerContainer, player, numberOfCards) {
+  // Her oyuncu için kart etkilerini rastgele sırala
+  const playerSpecificEffects = [...cardEffects].sort(() => Math.random() - 0.5);
+
+  // Belirtilen kart sayısı kadar kart oluştur
+  for (let i = 0; i < numberOfCards; i++) {
     const cardElement = document.createElement("div");
     cardElement.classList.add("card");
-    cardElement.textContent = `Kart ${index + 1}`;
+    cardElement.style.backgroundColor = cardColor; // Kart rengi
+    cardElement.dataset.used = "false"; // Kullanılmamış olarak işaretle
+
+    // Döngüyle etkileri sırayla seç, listeyi yeniden dolaş
+    const effect = playerSpecificEffects[i % playerSpecificEffects.length];
+    cardElement.dataset.effect = effect;
+
     cardElement.addEventListener("click", () => selectCard(effect, player, cardElement));
     playerContainer.appendChild(cardElement);
-  });
+  }
 }
-createCards(player1CardsContainer, 1);
-createCards(player2CardsContainer, 2);
+// Oyuncu 1 ve Oyuncu 2 için belirli sayıda kart oluştur
+createCards(player1CardsContainer, 1, 3);
+createCards(player2CardsContainer, 2, 3);
 
-// Kart seçimi
 function selectCard(effect, player, cardElement) {
   if (!gameStarted) {
     alert("Oyun başlatılmadı! Lütfen önce Oyunu Başlat butonuna tıklayın.");
-    return; // Oyun başlamadan kart seçimine izin verilmez
+    return;
   }
+
   if (player !== currentPlayer) {
     alert("Sıra sizde değil!");
     return;
   }
 
-  if (cardElement.classList.contains("disabled")) {
+  if (cardElement.dataset.used === "true") {
     alert("Bu kart zaten kullanıldı!");
     return;
   }
@@ -337,37 +345,61 @@ function selectCard(effect, player, cardElement) {
   const question = getRandomQuestion();
   if (!question) return;
 
-  let optionsText = question.options.map((option, index) => `${index + 1}: ${option}`).join("\n");
-  const answer = prompt(`Soru: ${question.text}\n\n${optionsText}`);
+  const modal = document.createElement("div");
+  modal.id = "question-modal";
+  modal.innerHTML = `
+    <div id="modal-content">
+      <h2>${question.text}</h2>
+      ${question.options
+        .map((option, index) => `<button class="answer-button" data-answer="${index + 1}">${index + 1}: ${option}</button>`)
+        .join("")}
+    </div>
+  `;
+  document.body.appendChild(modal);
 
-  if (answer === question.correctAnswer.toString()) {
-    questionSection.textContent = `Doğru cevap! '${effect}' etkisi uygulanıyor.`;
+  modal.querySelectorAll(".answer-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const userAnswer = parseInt(button.dataset.answer, 10);
+      handleAnswer(userAnswer, question, modal, effect, cardElement);
+    });
+  });
+}
+
+function handleAnswer(userAnswer, question, modal, effect, cardElement) {
+  if (userAnswer === question.correctAnswer) {
+    questionSection.textContent = `Doğru cevap! '${effect}' etkisi uygulanıyor.`; // Kart etkisi dahil edildi
     applyCardEffect(effect);
   } else {
     questionSection.textContent = "Yanlış cevap! Kart hakkınızı kaybettiniz.";
     switchPlayer();
   }
+  cardElement.dataset.used = "true";
   cardElement.classList.add("disabled");
-  setTimeout(() => { questionSection.textContent = ""; }, 3000); // Soru mesajını temizle
+
+  modal.remove();
+
+  setTimeout(() => {
+    questionSection.textContent = "";
+  }, 3000);
 }
 
-// Kart etkilerini uygulama
 function applyCardEffect(effect) {
   if (effect === "Engel Kaldırma Hakkı") {
-    effectInProgress = true; // Etki başladı
-    toggleButtons(false); // Yön butonlarını devre dışı bırak
-    //toggleButtons(false);// sadece engel kaldıracak ekstra hamle yapamayacak
-    gameBoard.addEventListener("click", (e) => {
-      if (e.target.classList.contains("barrier")) {
-        
-        e.target.classList.remove("barrier");
-        effectInProgress = false; // Etki sona erdi
-       // switchPlayer();
-        switchPlayer();
-      }
-    }, { once: true });
+    effectInProgress = true;
+    toggleButtons(false);
+    gameBoard.addEventListener(
+      "click",
+      (e) => {
+        if (e.target.classList.contains("barrier")) {
+          e.target.classList.remove("barrier");
+          effectInProgress = false;
+          switchPlayer();
+        }
+      },
+      { once: true }
+    );
   } else if (effect === "Ekstra Hamle Hakkı") {
-    extraMoveActive = true; // Ekstra hamle hakkı aktif edilir
+    extraMoveActive = true;
     toggleButtons(true);
   } else if (effect === "Hamle Yapamama Cezası") {
     switchPlayer();
