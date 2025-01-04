@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +8,15 @@
 </head>
 <body>
   <h1>Koridor Oyunu</h1>
-  <div id="player-name-inputs">
-  <label for="player1-name">Oyuncu 1 Adı:</label>
-  <input type="text" id="player1-name" placeholder="Oyuncu 1">
-  <label for="player2-name">Oyuncu 2 Adı:</label>
-  <input type="text" id="player2-name" placeholder="Oyuncu 2">
-  <button id="start-game">Oyunu Başlat</button>
-</div>
+  
+    <div id="player-name-inputs">
+      <h3>Oyuncu İsimlerini Giriniz</h3>
+      <input id="player1-name" type="text" placeholder="Oyuncu 1 Adı">
+      <input id="player2-name" type="text" placeholder="Oyuncu 2 Adı">
+      <button id="start-game">Oyunu Başlat</button>
+    </div>
+    
+
   <div id="status">Sıra: Oyuncu 1 (Mavi)</div>
   <div id="game-container">
     <div class="player-area" id="player1-area">
@@ -44,5 +45,6 @@
   </div>
   <script src="questions.js"></script>
   <script src="script.js"></script>
+  
 </body>
 </html>
