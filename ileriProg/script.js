@@ -419,4 +419,4 @@ player2Buttons.addEventListener("click", (e) => {
   }
 });
 
-toggleButtons(); // Başlangıçta doğru butonları aktif yapar
+toggleButtons(); // Başlangıçta doğru butonları aktif yapar    
