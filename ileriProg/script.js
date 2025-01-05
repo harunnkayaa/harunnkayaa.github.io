@@ -36,8 +36,8 @@ for (let row = 0; row < 9; row++) {
 }
 
 startGameButton.addEventListener("click", () => {
-  const player1Name = player1NameInput.value.trim() || "Oyuncu 1";
-  const player2Name = player2NameInput.value.trim() || "Oyuncu 2";
+   player1Name = player1NameInput.value.trim() || "Oyuncu 1";
+   player2Name = player2NameInput.value.trim() || "Oyuncu 2";
 
   // Oyuncu isimlerini güncelle
   document.querySelector("#player1-area h3").textContent = player1Name;
@@ -104,7 +104,9 @@ function resetGame() {
   // Oyuncu alanlarını sıfırla
   document.querySelector("#player1-area h3").textContent = "Oyuncu 1";
   document.querySelector("#player2-area h3").textContent = "Oyuncu 2";
-
+  
+  player1NameInput.value = "";
+  player2NameInput.value = "";
   // İsim giriş alanlarını tekrar görünür yap
   playerNameInputs.style.display = "flex";
 
@@ -187,8 +189,8 @@ function movePlayer(pos, direction) {
 
 // Oyuncuların hareket edebilip edemeyeceğini kontrol etme
 function canPlayersMove() {
-  const player1CanMove = canMove(player1Pos, false); // Oyuncu 1 hedefe ulaşabilir mi?
-  const player2CanMove = canMove(player2Pos, true);  // Oyuncu 2 hedefe ulaşabilir mi?
+  const player1CanMove = canMove(player1Pos, false); 
+  const player2CanMove = canMove(player2Pos, true);  
   return player1CanMove && player2CanMove;
 }
 function canMove(pos, forOpponent = false) {
