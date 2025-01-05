@@ -273,14 +273,16 @@ h1 {
   background-color: #45a049; /* Hover durumunda koyu yeşil */
 }
 
-@media (max-width: 600px) {
-  body {
-    flex-direction: column;
-    padding: 10px;
+/* Tahta ve genel düzenin küçük ekranlarda uyumlu hale getirilmesi */
+@media (max-width: 768px) {
+  #game-container {
+    flex-direction: column; /* Dikey hizalama */
+    align-items: center; /* Ortada hizala */
+    gap: 10px;
   }
 
   #game-board {
-    grid-template-columns: repeat(9, 35px); /* Hücre boyutlarını küçült */
+    grid-template-columns: repeat(9, 35px);
     grid-template-rows: repeat(9, 35px);
     gap: 3px;
   }
@@ -290,13 +292,17 @@ h1 {
     height: 35px;
   }
 
-  .button {
+  .player-area {
+    gap: 20px;
+  }
+
+  .buttons .button {
     padding: 10px;
     font-size: 12px;
   }
 
   .card {
-    width: 55px;
+    width: 50px;
     height: 30px;
     font-size: 12px;
   }
