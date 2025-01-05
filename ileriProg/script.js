@@ -61,10 +61,10 @@ placePlayer("player1", player1Pos);
 placePlayer("player2", player2Pos);
 
 function checkWin() {
-  // Oyuncu 1 (Mavi) için kazanma kontrolü
+  // Oyuncu 1 (Mavi) için kazanma kontrresetGameolü
   if (player1Pos.row === 0 ) { // Oyuncu 1 tam hedef pozisyona ulaştı
     setTimeout(() => {
-      alert("Oyuncu 1 (Mavi) kazandı!");
+      alert(`${player1Name} kazandı!`);
       resetGame();
     }, 100); // Taşı yerleştirdikten sonra bildirim gelir
     return true; // Kazandı, true döndür
@@ -73,7 +73,7 @@ function checkWin() {
   // Oyuncu 2 (Kırmızı) için kazanma kontrolü
   if (player2Pos.row === 8) { // Oyuncu 2 tam hedef pozisyona ulaştı
     setTimeout(() => {
-      alert("Oyuncu 2 (Kırmızı) kazandı!");
+      alert(`${player2Name} kazandı!`);
       resetGame();
     }, 100); // Taşı yerleştirdikten sonra bildirim gelir
     return true; // Kazandı, true döndür
@@ -86,22 +86,16 @@ function checkWin() {
 function resetGame() {
   // Tahtayı temizle
   grid.forEach(row => row.forEach(cell => (cell.className = "cell")));
-
   // Oyuncuları başlangıç pozisyonlarına yerleştir
-  player1Pos.row = 8;
-  player1Pos.col = 4;
-  player2Pos.row = 0;
-  player2Pos.col = 4;
+  player1Pos.row = 8; player1Pos.col = 4;
+  player2Pos.row = 0; player2Pos.col = 4;
   placePlayer("player1", player1Pos);
   placePlayer("player2", player2Pos);
-
   // Kartları yeniden aktif hale getir
   document.querySelectorAll(".card").forEach(card => card.classList.remove("disabled"));
-
   // Soru alanını temizle ve kullanılan soruları sıfırla
   questionSection.textContent = "";
   usedQuestions = [];
-
   // Oyuncu sırasını başa al
   currentPlayer = 1;
   extraMoveActive = false;
@@ -129,14 +123,11 @@ function getRandomQuestion() {
     alert("Sorular yüklenemedi. Lütfen questions.js dosyasını kontrol edin.");
     return null;
   }
-
   const availableQuestions = allQuestions.filter((_, index) => !usedQuestions.includes(index));
-
   if (availableQuestions.length === 0) {
     alert("Tüm sorular kullanıldı!");
     return null;
   }
-
   const randomIndex = Math.floor(Math.random() * availableQuestions.length);
   const questionIndex = allQuestions.indexOf(availableQuestions[randomIndex]);
 
@@ -153,12 +144,10 @@ function movePlayer(pos, direction) {
 
   let newRow = pos.row;
   let newCol = pos.col;
-
   if (direction === "up") newRow--;
   if (direction === "down") newRow++;
   if (direction === "left") newCol--;
   if (direction === "right") newCol++;
-
   // Hedef alanın diğer oyuncunun pozisyonu olup olmadığını kontrol et
   const otherPlayerPos = currentPlayer === 1 ? player2Pos : player1Pos;
   if (newRow === otherPlayerPos.row && newCol === otherPlayerPos.col) {
@@ -200,12 +189,8 @@ function movePlayer(pos, direction) {
 function canPlayersMove() {
   const player1CanMove = canMove(player1Pos, false); // Oyuncu 1 hedefe ulaşabilir mi?
   const player2CanMove = canMove(player2Pos, true);  // Oyuncu 2 hedefe ulaşabilir mi?
-
-
   return player1CanMove && player2CanMove;
 }
-
-
 function canMove(pos, forOpponent = false) {
   const visited = new Set();
   return dfs(pos.row, pos.col, visited, forOpponent);
@@ -216,12 +201,10 @@ function dfs(row, col, visited, forOpponent) {
   const key = `${row}-${col}`;
   if (visited.has(key)) return false;
   visited.add(key);
-
   // Oyuncu 1'in hedefi en üst sıra, Oyuncu 2'nin hedefi en alt sıra
   if ((!forOpponent && row === 0) || (forOpponent && row === 8)) {
     return true;
   }
-
   // Tüm yönlere bak: yukarı, aşağı, sol, sağ
   const directions = [
     { row: -1, col: 0 },
@@ -229,11 +212,9 @@ function dfs(row, col, visited, forOpponent) {
     { row: 0, col: -1 },
     { row: 0, col: 1 },
   ];
-
   for (let dir of directions) {
     const newRow = row + dir.row;
     const newCol = col + dir.col;
-
     if (
       newRow >= 0 &&
       newRow < 9 &&
@@ -247,7 +228,6 @@ function dfs(row, col, visited, forOpponent) {
       }
     }
   }
-
   return false;
 }
 
@@ -274,7 +254,6 @@ gameBoard.addEventListener("click", (e) => {
     alert("Oyun başlatılmadı! Lütfen önce Oyunu Başlat butonuna tıklayın.");
     return; // Oyun başlamadan herhangi bir işlem yapılmaz
   }
-
   if (e.target.classList.contains("cell")) {
     if (!e.target.classList.contains("barrier")) {
       // Yeni engel ekle
@@ -419,4 +398,4 @@ player2Buttons.addEventListener("click", (e) => {
   }
 });
 
-toggleButtons(); // Başlangıçta doğru butonları aktif yapar    
+toggleButtons(); // Başlangıçta doğru butonları aktif yapar
