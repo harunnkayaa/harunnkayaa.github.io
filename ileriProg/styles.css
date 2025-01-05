@@ -5,7 +5,8 @@ body {
   align-items: center;
   height: 100vh; /* Tüm ekranı kapsar */
   font-family: 'Roboto', Arial, sans-serif;
-  background: linear-gradient(to bottom, #f5f7fa, #c3cfe2);
+ background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+
   color: #2d3748;
   margin: 0;
   padding: 0;
@@ -270,4 +271,33 @@ h1 {
 
 #player-name-inputs button:hover {
   background-color: #45a049; /* Hover durumunda koyu yeşil */
+}
+
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  #game-board {
+    grid-template-columns: repeat(9, 35px); /* Hücre boyutlarını küçült */
+    grid-template-rows: repeat(9, 35px);
+    gap: 3px;
+  }
+
+  .cell {
+    width: 35px;
+    height: 35px;
+  }
+
+  .button {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .card {
+    width: 55px;
+    height: 30px;
+    font-size: 12px;
+  }
 }
