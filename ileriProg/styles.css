@@ -1,12 +1,11 @@
+/* Genel düzen */
 body {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
- 
   font-family: 'Roboto', Arial, sans-serif;
- background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
-
+  background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
   color: #2d3748;
   margin: 0;
   padding: 0;
@@ -20,7 +19,7 @@ h1 {
 }
 
 #game-container {
-  position: relative; /* Modalın referans alacağı konteyner */
+  position: relative;
   display: flex;
   margin-top: 15px;
   gap: 20px;
@@ -29,7 +28,7 @@ h1 {
 
 #game-board {
   display: grid;
-  grid-template-columns: repeat(9, 50px);
+  grid-template-columns: repeat(9, 50px); /* Sabit hücre boyutu */
   grid-template-rows: repeat(9, 50px);
   gap: 5px;
   border: 2px solid #4a5568;
@@ -51,87 +50,22 @@ h1 {
   transition: background-color 0.3s ease;
 }
 
-/* Hover efekti */
-.cell:hover {
-  background-color: #e2e8f0; /* Sadece beyaz hücreler için hover efekti */
-}
-
-/* Siyah engeller için özel stiller */
 .cell.barrier {
-  background-color: black !important; /* Kalıcı siyah renk */
-  cursor: default; /* Tıklanamaz görünüm */
+  background-color: black !important;
 }
 
-/* Siyah engellerde hover efekti devre dışı */
-.cell.barrier:hover {
-  background-color: black !important; /* Renk değişimini engeller */
+.player1, .player2 {
+  width: 40px; /* Sabit oyuncu taşı boyutu */
+  height: 40px;
+  border-radius: 50%;
 }
+
 .player1 {
   background-color: #3182ce;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-
 }
 
 .player2 {
   background-color: #e53e3e;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-}
-
-.barrier {
-  background-color: #2d3748;
-  border-radius: 5px;
-}
-
-#status {
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #4a5568;
-}
-
-.player-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 10px;
-  gap: 40px;
-}
-
-.cards {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.card {
-  width: 65px; /* Kart genişliği büyütüldü */
-  height: 40px; /* Kart yüksekliği büyütüldü */
-  background-color: #4CAF50; /* Kart rengi yeşil */
-  border-radius: 10px; /* Köşeler yuvarlatıldı */
-  margin: 2px; /* Kartlar arasında boşluk */
-  display: flex; /* Kart içeriğini ortalamak için */
-  align-items: center; /* Dikey hizalama */
-  justify-content: center; /* Yatay hizalama */
-  font-size: 16px; /* Yazı boyutu */
-  font-weight: bold; /* Yazı kalınlığı */
-  color: #ffffff; /* Yazı rengi beyaz */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
-  cursor: pointer; /* Fare simgesi */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animasyonlar */
-}
-
-.card:hover {
-  transform: scale(1.1); /* Hover durumunda büyüme efekti */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Hover durumunda gölge artışı */
-}
-
-.card.disabled {
-  opacity: 0.5; /* Şeffaflık */
-  pointer-events: none; /* Tıklanamaz */
 }
 
 .buttons {
@@ -141,47 +75,6 @@ h1 {
     "left mid right"
     "down down down";
   gap: 10px;
-}
-#question-modal {
-   position: absolute; /* Oyun alanına göre konumlanır */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border: 2px solid #4a5568;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  width: 300px;
-  text-align: center;
-}
-
-#modal-content h2 {
-  font-size: 18px;
-  color: #2d3748;
-  margin-bottom: 20px;
-}
-
-.answer-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #63b3ed;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.answer-button:hover {
-  background-color: #3182ce;
-}
-
-.answer-button:active {
-  background-color: #2b6cb0;
 }
 
 .button {
@@ -208,122 +101,68 @@ h1 {
   cursor: not-allowed;
 }
 
-.button.up {
-  grid-area: up;
+.card {
+  width: 65px;
+  height: 40px;
+  background-color: #4CAF50;
+  border-radius: 10px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.button.down {
-  grid-area: down;
+.card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.button.left {
-  grid-area: left;
+.card.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.button.right {
-  grid-area: right;
-}
-
-.button.mid {
-  grid-area: mid;
-  visibility: hidden;
-}
-
-
-#player-name-inputs h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #2d3748;
+#status {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #4a5568;
 }
 
 #player-name-inputs {
-  display: flex; /* Flex düzenleme */
-  flex-direction: ROW; /* Elemanları dikey olarak hizala */
-  align-items: center; /* Ortada hizala */
-  justify-content: center; /* Yatayda ortala */
-  gap: 10px; /* Elemanlar arasındaki boşluk */
-  margin-bottom: 5px; /* Alt boşluk */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 #player-name-inputs input {
-  width: 150px; /* Genişlik */
-  height: 20px; /* Yükseklik */
-  
-  font-size: 14px; /* Yazı boyutu */
-  padding: 5px; /* İç boşluk */
-  border: 2px solid #4a5568; /* Kenarlık */
-  border-radius: 8px; /* Köşeler yuvarlatıldı */
+  width: 150px;
+  height: 30px;
+  font-size: 14px;
+  padding: 5px;
+  border: 2px solid #4a5568;
+  border-radius: 8px;
 }
 
 #player-name-inputs button {
-  margin-top: 5px; /* Buton ile giriş alanları arasında boşluk */
-  padding: 10px 20px; /* Buton boyutları */
-  font-size: 14px; /* Yazı boyutu */
-  flex-direction: column; /* Elemanları dikey olarak hizala */
-  background-color: #4CAF50; /* Yeşil arka plan */
-  color: white; /* Yazı rengi */
-  border: none; /* Kenarlık yok */
-  border-radius: 8px; /* Köşeler yuvarlatıldı */
-  cursor: pointer; /* İşaretçi */
-  gap: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 #player-name-inputs button:hover {
-  background-color: #45a049; /* Hover durumunda koyu yeşil */
+  background-color: #45a049;
 }
-
-/* Çok küçük ekranlar için (telefonlar) */
-@media (max-width: 480px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  #player-name-inputs input {
-    width: 120px; /* Daha dar giriş alanları */
-    font-size: 12px;
-  }
-
-  #game-board {
-    grid-template-columns: repeat(9, 30px); /* Hücre boyutlarını küçült */
-    grid-template-rows: repeat(9, 30px);
-  }
-
-  .cell {
-    width: 30px;
-    height: 30px;
-  }
-
-  .buttons {
-    grid-template-areas: /* Yön butonları düzeni daha kompakt */
-      "up"
-      "left mid right"
-      "down";
-    gap: 5px;
-  }
-
-  .buttons .button {
-    font-size: 10px; /* Yazı boyutunu küçült */
-    padding: 5px; /* Buton iç boşluğu azalt */
-    width: 30px; /* Buton genişliği */
-    height: 30px; /* Buton yüksekliği */
-  }
-
-  .card {
-    width: 50px; /* Kart genişliği küçültüldü */
-    height: 20px; /* Kart yüksekliği küçültüldü */
-    font-size: 10px; /* Kart yazı boyutu */
-  }
-
-  #player-name-inputs button {
-    padding: 5px 10px; /* Daha küçük butonlar */
-    font-size: 12px;
-  }
-
-  #status {
-    font-size: 16px; /* Daha küçük durum ekranı */
-  }
-}
-
-
-
