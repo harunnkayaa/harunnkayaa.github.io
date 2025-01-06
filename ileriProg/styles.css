@@ -279,66 +279,26 @@ h1 {
     padding: 10px;
   }
 
-  #game-container {
-    flex-direction: column; /* Dikey düzen */
-    align-items: center;
-    gap: 10px;
-  }
-
-  .player-area {
-    flex-direction: row; /* Oyuncu alanlarını yatay hizala */
-    justify-content: space-between;
-    gap: 10px; /* Aralarındaki boşluk azaltıldı */
-  }
-
   #game-board {
-    grid-template-columns: repeat(9, 30px); /* Hücre boyutları küçültüldü */
-    grid-template-rows: repeat(9, 30px);
-    gap: 2px;
-    margin: 10px 0;
+    grid-template-columns: repeat(9, 35px); /* Hücre boyutlarını küçült */
+    grid-template-rows: repeat(9, 35px);
+    gap: 3px;
   }
 
   .cell {
-    width: 30px;
-    height: 30px;
-  }
-
-  .buttons, .cards {
-    flex-direction: row; /* Yön tuşlarını ve kartları yatay hizala */
-    gap: 5px; /* Düğme ve kartlar arası boşluk */
+    width: 35px;
+    height: 35px;
   }
 
   .button {
     padding: 5px;
-    font-size: 10px;
-    width: 30px; /* Düğme genişliği */
-    height: 30px; /* Düğme yüksekliği */
+    font-size: 6px;
   }
 
   .card {
     width: 45px;
-    height: 25px;
-    font-size: 10px;
-  }
-
-  h1 {
-    font-size: 1.5rem; /* Başlık boyutunu küçült */
-  }
-
-  #player-name-inputs input {
-    width: 100px; /* Daha dar giriş alanları */
-    font-size: 12px;
-  }
-
-  #player-name-inputs button {
-    padding: 8px 12px; /* Buton boyutları küçültüldü */
-    font-size: 12px;
-  }
-
-  #status {
-    font-size: 14px; /* Durum mesajı yazı boyutu küçültüldü */
-    margin-top: 10px;
+    height: 20px;
+    font-size: 6px;
   }
 }
-
 
