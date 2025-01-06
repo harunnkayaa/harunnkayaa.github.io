@@ -285,7 +285,7 @@ h1 {
   }
 
   #game-board {
-    grid-template-columns: repeat(9, 30px);
+    grid-template-columns: repeat(9, 30px); /* Hücre boyutlarını küçült */
     grid-template-rows: repeat(9, 30px);
   }
 
@@ -294,20 +294,36 @@ h1 {
     height: 30px;
   }
 
+  .buttons {
+    grid-template-areas: /* Yön butonları düzeni daha kompakt */
+      "up"
+      "left mid right"
+      "down";
+    gap: 5px;
+  }
+
   .buttons .button {
-    font-size: 5x;
+    font-size: 10px; /* Yazı boyutunu küçült */
+    padding: 5px; /* Buton iç boşluğu azalt */
+    width: 30px; /* Buton genişliği */
+    height: 30px; /* Buton yüksekliği */
   }
 
   .card {
-    width: 35px;
-    height: 15px;
-    font-size: 5px;
+    width: 50px; /* Kart genişliği küçültüldü */
+    height: 20px; /* Kart yüksekliği küçültüldü */
+    font-size: 10px; /* Kart yazı boyutu */
   }
 
   #player-name-inputs button {
-    padding: 5px 10px;
+    padding: 5px 10px; /* Daha küçük butonlar */
     font-size: 12px;
   }
+
+  #status {
+    font-size: 16px; /* Daha küçük durum ekranı */
+  }
 }
+
 
 
