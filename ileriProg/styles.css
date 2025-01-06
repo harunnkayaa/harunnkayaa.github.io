@@ -40,21 +40,19 @@ h1 {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 90%; /* Taşmayı önlemek için genişlik */
-  max-width: 400px; /* Maksimum genişlik */
+  max-width: 420px; /* Maksimum genişlik */
 }
 
 .cell {
-  width: 100%;
-  height: 0;
-  padding-top: 100%; /* Kare görünüm */
+  width: 40px; /* Sabit hücre genişliği */
+  height: 40px; /* Sabit hücre yüksekliği */
   background-color: white;
   border: 1px solid #cbd5e0;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  position: relative; /* İçerideki elemanları hizalamak için gerekli */
-  overflow: hidden; /* Taşmaları engellemek için */
+  overflow: hidden; /* Taşmaları önler */
 }
 
 /* Hover efekti */
@@ -72,19 +70,20 @@ h1 {
 .cell.barrier:hover {
   background-color: black !important; /* Renk değişimini engeller */
 }
-.player1 {
-  background-color: #3182ce;
-  border-radius: 50%;
-  width: 38px;
+.player1, .player2 {
+  width: 40px; /* Taş genişliği */
+  height: 40px; /* Taş yüksekliği */
+  border-radius: 50%; /* Yuvarlak şekil için */
+}
 
+.player1 {
+  background-color: #3182ce; /* Mavi renk */
 }
 
 .player2 {
-  background-color: #e53e3e;
-  border-radius: 50%;
-  width: 38px;
-  
+  background-color: #e53e3e; /* Kırmızı renk */
 }
+
 
 .barrier {
   background-color: #2d3748;
