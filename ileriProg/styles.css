@@ -280,15 +280,22 @@ h1 {
   }
 
   #game-container {
-    flex-direction: column;
+    flex-direction: column; /* Dikey düzen */
     align-items: center;
     gap: 10px;
   }
 
+  .player-area {
+    flex-direction: row; /* Oyuncu alanlarını yatay hizala */
+    justify-content: space-between;
+    gap: 10px; /* Aralarındaki boşluk azaltıldı */
+  }
+
   #game-board {
-    grid-template-columns: repeat(9, 30px); /* Hücre boyutları daha da küçüldü */
+    grid-template-columns: repeat(9, 30px); /* Hücre boyutları küçültüldü */
     grid-template-rows: repeat(9, 30px);
     gap: 2px;
+    margin: 10px 0;
   }
 
   .cell {
@@ -296,15 +303,20 @@ h1 {
     height: 30px;
   }
 
+  .buttons, .cards {
+    flex-direction: row; /* Yön tuşlarını ve kartları yatay hizala */
+    gap: 5px; /* Düğme ve kartlar arası boşluk */
+  }
+
   .button {
-    padding: 8px;
+    padding: 5px;
     font-size: 10px;
-    width: 40px; /* Düğme genişliği */
-    height: 40px; /* Düğme yüksekliği */
+    width: 30px; /* Düğme genişliği */
+    height: 30px; /* Düğme yüksekliği */
   }
 
   .card {
-    width: 50px;
+    width: 45px;
     height: 25px;
     font-size: 10px;
   }
@@ -314,17 +326,13 @@ h1 {
   }
 
   #player-name-inputs input {
-    width: 120px; /* Daha dar giriş alanları */
+    width: 100px; /* Daha dar giriş alanları */
     font-size: 12px;
   }
 
   #player-name-inputs button {
-    padding: 8px 15px; /* Buton boyutları küçültüldü */
+    padding: 8px 12px; /* Buton boyutları küçültüldü */
     font-size: 12px;
-  }
-
-  .player-area {
-    gap: 20px; /* Oyuncu alanı arasındaki boşluk azaltıldı */
   }
 
   #status {
@@ -332,4 +340,5 @@ h1 {
     margin-top: 10px;
   }
 }
+
 
