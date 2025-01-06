@@ -295,13 +295,13 @@ h1 {
   }
 
   .buttons .button {
-    font-size: 10px;
+    font-size: 5x;
   }
 
   .card {
-    width: 45px;
-    height: 25px;
-    font-size: 10px;
+    width: 35px;
+    height: 15px;
+    font-size: 5px;
   }
 
   #player-name-inputs button {
