@@ -273,32 +273,41 @@ h1 {
   background-color: #45a049; /* Hover durumunda koyu yeşil */
 }
 
-@media (max-width: 600px) {
-  body {
-    flex-direction: column;
-    padding: 10px;
+/* Çok küçük ekranlar için (telefonlar) */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #player-name-inputs input {
+    width: 120px; /* Daha dar giriş alanları */
+    font-size: 12px;
   }
 
   #game-board {
-    grid-template-columns: repeat(9, 35px); /* Hücre boyutlarını küçült */
-    grid-template-rows: repeat(9, 35px);
-    gap: 3px;
+    grid-template-columns: repeat(9, 30px);
+    grid-template-rows: repeat(9, 30px);
   }
 
   .cell {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
 
-  .button {
-    padding: 5px;
-    font-size: 6px;
+  .buttons .button {
+    font-size: 10px;
   }
 
   .card {
     width: 45px;
-    height: 20px;
-    font-size: 6px;
+    height: 25px;
+    font-size: 10px;
+  }
+
+  #player-name-inputs button {
+    padding: 5px 10px;
+    font-size: 12px;
   }
 }
+
 
