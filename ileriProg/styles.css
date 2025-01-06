@@ -3,7 +3,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Tüm ekranı kapsar */
+ 
   font-family: 'Roboto', Arial, sans-serif;
  background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
 
